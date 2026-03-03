@@ -133,7 +133,9 @@ const Hero: React.FC = () => {
                     transition={{ delay: 2.5, duration: 1, type: 'spring', stiffness: 100 }}
                     className="mt-10 flex justify-center"
                 >
-                    <Connect3D />
+                    <Suspense fallback={null}>
+                        <Connect3D />
+                    </Suspense>
                 </motion.div>
 
                 {/* Scroll indicator */}

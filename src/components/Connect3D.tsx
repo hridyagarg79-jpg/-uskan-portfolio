@@ -1,81 +1,76 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Text, Float } from '@react-three/drei';
+import { Float, Html } from '@react-three/drei';
 import * as THREE from 'three';
 
-const ConnectSphere: React.FC = () => {
-    const meshRef = useRef<THREE.Mesh>(null);
+const RotatingRing: React.FC = () => {
     const groupRef = useRef<THREE.Group>(null);
-
-    // Create text positions around sphere
-    const textPositions = useMemo(() => {
-        const positions = [];
-        const text = 'CONNECT · CONNECT · CONNECT · ';
-        const charCount = text.length;
-        for (let i = 0; i < charCount; i++) {
-            const angle = (i / charCount) * Math.PI * 2;
-            positions.push({
-                char: text[i],
-                angle,
-                x: Math.cos(angle) * 1.15,
-                z: Math.sin(angle) * 1.15,
-            });
-        }
-        return positions;
-    }, []);
 
     useFrame((_, delta) => {
         if (groupRef.current) {
-            groupRef.current.rotation.y += delta * 0.4;
+            groupRef.current.rotation.y += delta * 0.5;
         }
     });
 
     return (
-        <Float speed={2} rotationIntensity={0.3} floatIntensity={0.5}>
+        <group ref={groupRef}>
+            <mesh>
+                <torusGeometry args={[1.1, 0.015, 16, 100]} />
+                <meshStandardMaterial color="#C4B5FD" emissive="#C4B5FD" emissiveIntensity={0.3} />
+            </mesh>
+            <mesh rotation={[Math.PI / 6, 0, 0]}>
+                <torusGeometry args={[1.15, 0.01, 16, 100]} />
+                <meshStandardMaterial color="#F0C6D4" emissive="#F0C6D4" emissiveIntensity={0.2} transparent opacity={0.6} />
+            </mesh>
+        </group>
+    );
+};
+
+const Sphere: React.FC = () => {
+    const meshRef = useRef<THREE.Mesh>(null);
+
+    useFrame((_, delta) => {
+        if (meshRef.current) {
+            meshRef.current.rotation.y += delta * 0.15;
+        }
+    });
+
+    return (
+        <Float speed={2} rotationIntensity={0.2} floatIntensity={0.4}>
             <group>
                 {/* Core sphere */}
                 <mesh ref={meshRef}>
-                    <sphereGeometry args={[0.9, 64, 64]} />
+                    <sphereGeometry args={[0.85, 64, 64]} />
                     <meshStandardMaterial
                         color="#1a1a24"
                         roughness={0.15}
-                        metalness={0.8}
-                        envMapIntensity={1.5}
+                        metalness={0.9}
                     />
                 </mesh>
 
                 {/* Glass outer shell */}
                 <mesh>
-                    <sphereGeometry args={[0.95, 32, 32]} />
+                    <sphereGeometry args={[0.9, 32, 32]} />
                     <meshPhysicalMaterial
                         color="#C4B5FD"
                         roughness={0.1}
                         metalness={0.1}
-                        transmission={0.9}
+                        transmission={0.85}
                         thickness={0.5}
                         transparent
-                        opacity={0.15}
+                        opacity={0.12}
                     />
                 </mesh>
 
-                {/* Rotating text ring */}
-                <group ref={groupRef}>
-                    {textPositions.map((pos, i) => (
-                        <Text
-                            key={i}
-                            position={[pos.x, 0, pos.z]}
-                            rotation={[0, -pos.angle + Math.PI / 2, 0]}
-                            fontSize={0.14}
-                            color="#C4B5FD"
-                            font="/fonts/Inter-Medium.woff"
-                            anchorX="center"
-                            anchorY="middle"
-                            letterSpacing={0.1}
-                        >
-                            {pos.char}
-                        </Text>
-                    ))}
-                </group>
+                {/* Rotating rings */}
+                <RotatingRing />
+
+                {/* HTML label */}
+                <Html center distanceFactor={4} style={{ pointerEvents: 'none' }}>
+                    <div className="text-[10px] font-sans font-bold uppercase tracking-[0.4em] text-accent/80 whitespace-nowrap select-none">
+                        CONNECT
+                    </div>
+                </Html>
             </group>
         </Float>
     );
@@ -96,14 +91,14 @@ const Connect3D: React.FC = () => {
             data-cursor-text="Click"
         >
             <Canvas
-                camera={{ position: [0, 0, 3.5], fov: 45 }}
+                camera={{ position: [0, 0, 3.2], fov: 45 }}
                 style={{ pointerEvents: 'none' }}
             >
-                <ambientLight intensity={0.4} />
-                <directionalLight position={[5, 5, 5]} intensity={0.8} />
+                <ambientLight intensity={0.5} />
+                <directionalLight position={[5, 5, 5]} intensity={0.7} />
                 <pointLight position={[-3, -3, 2]} intensity={0.3} color="#C4B5FD" />
                 <pointLight position={[3, 0, -2]} intensity={0.2} color="#F0C6D4" />
-                <ConnectSphere />
+                <Sphere />
             </Canvas>
             {/* Glow ring on hover */}
             <div className="absolute inset-0 rounded-full border border-accent/0 group-hover:border-accent/20 group-hover:shadow-[0_0_40px_-10px_rgba(196,181,253,0.2)] transition-all duration-700 pointer-events-none" />
