@@ -1,3 +1,4 @@
+import { useState, useCallback } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
@@ -15,6 +16,8 @@ import ScrollProgress from './components/ScrollProgress';
 import FloatingParticles from './components/FloatingParticles';
 import CurrentlyStrip from './components/CurrentlyStrip';
 import Obsessions from './components/Obsessions';
+import PageLoadIntro from './components/PageLoadIntro';
+import KonamiEasterEgg from './components/KonamiEasterEgg';
 import ProjectPage from './pages/ProjectPage';
 import NotFound from './pages/NotFound';
 
@@ -58,11 +61,16 @@ function AnimatedRoutes() {
 }
 
 function App() {
+  const [introComplete, setIntroComplete] = useState(false);
+  const handleIntroComplete = useCallback(() => setIntroComplete(true), []);
+
   return (
     <BrowserRouter>
+      {!introComplete && <PageLoadIntro onComplete={handleIntroComplete} />}
       <CustomCursor />
       <ScrollProgress />
       <FloatingParticles />
+      <KonamiEasterEgg />
       <AnimatedRoutes />
     </BrowserRouter>
   );

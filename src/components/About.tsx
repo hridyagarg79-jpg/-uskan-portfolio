@@ -1,14 +1,63 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef, useEffect, useState } from 'react';
+import { motion, useInView } from 'framer-motion';
 
 const stats = [
-    { value: '10+', label: 'Projects Shipped' },
-    { value: '12', label: 'Hackathons' },
-    { value: '847+', label: 'Figma Frames' },
-    { value: '∞', label: 'Cups of Chai' },
+    { value: 10, suffix: '+', label: 'Projects Shipped' },
+    { value: 12, suffix: '', label: 'Hackathons' },
+    { value: 847, suffix: '+', label: 'Figma Frames' },
+    { value: null, display: '∞', label: 'Cups of Chai' },
 ];
 
 const tools = ['Figma', 'Illustrator', 'Photoshop', 'After Effects', 'Framer'];
+
+/* ═══ ANIMATED COUNTER ═══ */
+const AnimatedCounter: React.FC<{ value: number | null; suffix: string; display?: string }> = ({ value, suffix, display }) => {
+    const ref = useRef<HTMLSpanElement>(null);
+    const isInView = useInView(ref, { once: true, margin: '-50px' });
+    const [count, setCount] = useState(0);
+
+    useEffect(() => {
+        if (!isInView || value === null) return;
+        let start = 0;
+        const end = value;
+        const duration = 1800;
+        const stepTime = 16;
+        const totalSteps = duration / stepTime;
+        const increment = end / totalSteps;
+
+        const timer = setInterval(() => {
+            start += increment;
+            if (start >= end) {
+                setCount(end);
+                clearInterval(timer);
+            } else {
+                setCount(Math.floor(start));
+            }
+        }, stepTime);
+
+        return () => clearInterval(timer);
+    }, [isInView, value]);
+
+    if (display) {
+        return (
+            <motion.span
+                ref={ref}
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={isInView ? { scale: 1, opacity: 1 } : {}}
+                transition={{ type: 'spring', stiffness: 200, damping: 15 }}
+                className="text-3xl md:text-4xl font-display font-bold text-text-primary block mb-1"
+            >
+                {display}
+            </motion.span>
+        );
+    }
+
+    return (
+        <span ref={ref} className="text-3xl md:text-4xl font-display font-bold text-text-primary block mb-1">
+            {isInView ? count : 0}{suffix}
+        </span>
+    );
+};
 
 const About: React.FC = () => {
     return (
@@ -40,7 +89,7 @@ const About: React.FC = () => {
                 </p>
             </motion.div>
 
-            {/* Bento Grid */}
+            {/* Bento Grid — Animated Counters */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
                 {stats.map((stat, i) => (
                     <motion.div
@@ -51,9 +100,7 @@ const About: React.FC = () => {
                         transition={{ delay: i * 0.1, duration: 0.6 }}
                         className="glass-card rounded-2xl p-6 text-center hover:border-border-hover transition-all duration-500 glow-accent-hover"
                     >
-                        <span className="text-3xl md:text-4xl font-display font-bold text-text-primary block mb-1">
-                            {stat.value}
-                        </span>
+                        <AnimatedCounter value={stat.value} suffix={stat.suffix || ''} display={stat.display} />
                         <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-text-muted">
                             {stat.label}
                         </span>

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { projects } from '../data/projects';
 import type { ProjectData } from '../data/projects';
 import RevealOnScroll from './RevealOnScroll';
@@ -23,23 +23,29 @@ const projectMeta: Record<string, { industry: string; impact: string; metric?: s
 const ProjectCard: React.FC<{ project: ProjectData; index: number }> = ({ project, index }) => {
     const meta = projectMeta[project.slug] || { industry: project.category, impact: project.description };
     const isEven = index % 2 === 0;
+    const cardRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({ target: cardRef, offset: ['start end', 'end start'] });
+    const imageY = useTransform(scrollYProgress, [0, 1], [-30, 30]);
 
     return (
         <RevealOnScroll delay={index * 0.1}>
             <Link to={`/project/${project.slug}`} className="block group cursor-none" data-cursor-text="View">
                 <motion.div
+                    ref={cardRef}
                     whileHover={{ rotateY: isEven ? 2 : -2, rotateX: -1 }}
                     transition={{ type: 'spring', stiffness: 200, damping: 20 }}
                     style={{ transformPerspective: 1200 }}
                     className="relative rounded-2xl overflow-hidden bg-bg-card border border-border hover:border-accent/30 transition-all duration-700 glow-accent-hover"
                 >
-                    {/* Image with hover zoom */}
+                    {/* Image with parallax + hover zoom */}
                     <div className="w-full aspect-[16/9] overflow-hidden relative">
-                        <SkeletonImage
-                            src={project.image}
-                            alt={project.title}
-                            className="w-full h-full group-hover:scale-[1.06] transition-transform duration-[1.5s] ease-out"
-                        />
+                        <motion.div style={{ y: imageY }} className="w-full h-[120%] -mt-[10%]">
+                            <SkeletonImage
+                                src={project.image}
+                                alt={project.title}
+                                className="w-full h-full group-hover:scale-[1.06] transition-transform duration-[1.5s] ease-out"
+                            />
+                        </motion.div>
                         <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/30 to-transparent opacity-60" />
 
                         {/* Floating metric badge */}
