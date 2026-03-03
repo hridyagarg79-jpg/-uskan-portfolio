@@ -1,6 +1,8 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import MagneticButton from './MagneticButton';
+import CategoryPills from './CategoryPills';
+import Connect3D from './Connect3D';
 
 const GlassOrb = React.lazy(() => import('./GlassOrb'));
 
@@ -114,12 +116,32 @@ const Hero: React.FC = () => {
                     </MagneticButton>
                 </motion.div>
 
+                {/* Category Pills */}
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1.8, duration: 0.8 }}
+                    className="flex justify-center"
+                >
+                    <CategoryPills />
+                </motion.div>
+
+                {/* 3D Connect Sphere */}
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 2.5, duration: 1, type: 'spring', stiffness: 100 }}
+                    className="mt-10 flex justify-center"
+                >
+                    <Connect3D />
+                </motion.div>
+
                 {/* Scroll indicator */}
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ delay: 3, duration: 1 }}
-                    className="mt-20 flex flex-col items-center cursor-none"
+                    transition={{ delay: 3.5, duration: 1 }}
+                    className="mt-8 flex flex-col items-center cursor-none"
                     onClick={scrollToWork}
                 >
                     <motion.div
