@@ -48,10 +48,10 @@ const Hero: React.FC = () => {
                     transition={{ delay: 0.5, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                     className="mb-6"
                 >
-                    <h1 className="text-outline chromatic-hover text-[14vw] md:text-[10vw] font-display font-bold leading-[0.9] tracking-tighter cursor-none select-none">
+                    <h1 className="gradient-sweep chromatic-hover text-[14vw] md:text-[10vw] font-display font-bold leading-[0.9] tracking-tighter cursor-none select-none">
                         MUSKAN
                     </h1>
-                    <h1 className="text-outline chromatic-hover text-[14vw] md:text-[10vw] font-display font-bold leading-[0.9] tracking-tighter cursor-none select-none">
+                    <h1 className="gradient-sweep chromatic-hover text-[14vw] md:text-[10vw] font-display font-bold leading-[0.9] tracking-tighter cursor-none select-none">
                         GARG
                     </h1>
                 </motion.div>

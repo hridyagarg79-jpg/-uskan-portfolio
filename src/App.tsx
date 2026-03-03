@@ -21,6 +21,7 @@ import KonamiEasterEgg from './components/KonamiEasterEgg';
 import ScrollHueShift from './components/ScrollHueShift';
 import BackToTop from './components/BackToTop';
 import CursorRipple from './components/CursorRipple';
+import SmoothScroll from './components/SmoothScroll';
 import ProjectPage from './pages/ProjectPage';
 import NotFound from './pages/NotFound';
 
@@ -69,6 +70,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <SmoothScroll />
       {!introComplete && <PageLoadIntro onComplete={handleIntroComplete} />}
       <ScrollHueShift />
       <CustomCursor />
