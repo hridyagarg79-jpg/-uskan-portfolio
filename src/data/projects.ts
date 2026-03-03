@@ -247,3 +247,9 @@ export const getNextProject = (currentSlug: string): ProjectData => {
     const nextIndex = (currentIndex + 1) % projects.length;
     return projects[nextIndex];
 };
+
+export const getPrevProject = (currentSlug: string): ProjectData => {
+    const currentIndex = projects.findIndex(p => p.slug === currentSlug);
+    const prevIndex = (currentIndex - 1 + projects.length) % projects.length;
+    return projects[prevIndex];
+};

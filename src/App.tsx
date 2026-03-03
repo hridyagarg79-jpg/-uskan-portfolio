@@ -20,6 +20,7 @@ import PageLoadIntro from './components/PageLoadIntro';
 import KonamiEasterEgg from './components/KonamiEasterEgg';
 import ScrollHueShift from './components/ScrollHueShift';
 import BackToTop from './components/BackToTop';
+import CursorRipple from './components/CursorRipple';
 import ProjectPage from './pages/ProjectPage';
 import NotFound from './pages/NotFound';
 
@@ -71,6 +72,7 @@ function App() {
       {!introComplete && <PageLoadIntro onComplete={handleIntroComplete} />}
       <ScrollHueShift />
       <CustomCursor />
+      <CursorRipple />
       <ScrollProgress />
       <FloatingParticles />
       <KonamiEasterEgg />

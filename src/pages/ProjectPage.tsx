@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
-import { getProjectBySlug, getNextProject } from '../data/projects';
+import { getProjectBySlug, getNextProject, getPrevProject } from '../data/projects';
 import SkeletonImage from '../components/SkeletonImage';
 
 /* ═══ ANIMATED COUNTER ═══ */
@@ -139,6 +139,7 @@ const ProjectPage: React.FC = () => {
     }
 
     const next = getNextProject(project.slug);
+    const prev = getPrevProject(project.slug);
 
     return (
         <div className="bg-bg min-h-screen">
@@ -388,16 +389,27 @@ const ProjectPage: React.FC = () => {
                 </div>
             </section>
 
-            {/* 12. NEXT PROJECT */}
-            <section className="min-h-[50vh] flex items-center justify-center px-8 border-t border-border">
-                <div className="text-center">
-                    <p className="text-[10px] font-sans font-medium uppercase tracking-[0.3em] text-text-muted mb-8">Next</p>
-                    <Link to={`/project/${next.slug}`} className="group inline-block cursor-none">
-                        <h2 className="text-4xl md:text-6xl font-serif font-medium tracking-tight text-text-primary/10 group-hover:text-text-primary transition-all duration-700 leading-none mb-4">
+            {/* 12. PREV / NEXT PROJECT */}
+            <section className="border-t border-border">
+                <div className="grid grid-cols-1 md:grid-cols-2">
+                    {/* Previous */}
+                    <Link to={`/project/${prev.slug}`} className="group flex flex-col justify-center p-12 md:p-16 border-b md:border-b-0 md:border-r border-border cursor-none hover:bg-accent/[0.02] transition-colors duration-500">
+                        <p className="text-[10px] font-sans font-medium uppercase tracking-[0.3em] text-text-muted mb-4">← Previous</p>
+                        <h3 className="text-2xl md:text-3xl font-serif font-medium tracking-tight text-text-primary/20 group-hover:text-text-primary transition-all duration-500 leading-tight mb-2">
+                            {prev.title}
+                        </h3>
+                        <span className="text-[10px] font-sans uppercase tracking-[0.15em] text-accent/30 group-hover:text-accent transition-colors duration-500">
+                            {prev.category}
+                        </span>
+                    </Link>
+                    {/* Next */}
+                    <Link to={`/project/${next.slug}`} className="group flex flex-col justify-center items-end text-right p-12 md:p-16 cursor-none hover:bg-accent/[0.02] transition-colors duration-500">
+                        <p className="text-[10px] font-sans font-medium uppercase tracking-[0.3em] text-text-muted mb-4">Next →</p>
+                        <h3 className="text-2xl md:text-3xl font-serif font-medium tracking-tight text-text-primary/20 group-hover:text-text-primary transition-all duration-500 leading-tight mb-2">
                             {next.title}
-                        </h2>
-                        <span className="text-xs font-sans font-medium uppercase tracking-[0.15em] text-accent/30 group-hover:text-accent transition-colors">
-                            View Case Study →
+                        </h3>
+                        <span className="text-[10px] font-sans uppercase tracking-[0.15em] text-accent/30 group-hover:text-accent transition-colors duration-500">
+                            {next.category}
                         </span>
                     </Link>
                 </div>

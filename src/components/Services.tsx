@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import StaggeredText from './StaggeredText';
 
 const services = [
     { title: 'Product Design', description: 'End-to-end product thinking from concept to production.' },
@@ -30,9 +31,11 @@ const Services: React.FC = () => {
                 <span className="text-[10px] font-sans font-medium uppercase tracking-[0.3em] text-accent block mb-4">
                     Interaction Lab
                 </span>
-                <h2 className="text-3xl md:text-4xl font-display font-bold text-text-primary tracking-tight max-w-lg mb-20">
-                    What I can do for you.
-                </h2>
+                <StaggeredText
+                    text="What I can do for you."
+                    as="h2"
+                    className="text-3xl md:text-4xl font-display font-bold text-text-primary tracking-tight max-w-lg mb-20"
+                />
             </motion.div>
 
             <div className="space-y-0">

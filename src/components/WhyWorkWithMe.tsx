@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import StaggeredText from './StaggeredText';
 
 const blocks = [
     {
@@ -37,9 +38,11 @@ const WhyWorkWithMe: React.FC = () => {
                 <span className="text-[10px] font-sans font-medium uppercase tracking-[0.3em] text-accent block mb-4">
                     What I Bring
                 </span>
-                <h2 className="text-3xl md:text-4xl font-display font-bold text-text-primary tracking-tight max-w-lg mb-20">
-                    Design that drives growth — not just looks good.
-                </h2>
+                <StaggeredText
+                    text="Design that drives growth — not just looks good."
+                    as="h2"
+                    className="text-3xl md:text-4xl font-display font-bold text-text-primary tracking-tight max-w-lg mb-20"
+                />
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-14">
