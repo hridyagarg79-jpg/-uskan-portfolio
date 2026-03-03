@@ -18,6 +18,8 @@ import CurrentlyStrip from './components/CurrentlyStrip';
 import Obsessions from './components/Obsessions';
 import PageLoadIntro from './components/PageLoadIntro';
 import KonamiEasterEgg from './components/KonamiEasterEgg';
+import ScrollHueShift from './components/ScrollHueShift';
+import BackToTop from './components/BackToTop';
 import ProjectPage from './pages/ProjectPage';
 import NotFound from './pages/NotFound';
 
@@ -67,10 +69,12 @@ function App() {
   return (
     <BrowserRouter>
       {!introComplete && <PageLoadIntro onComplete={handleIntroComplete} />}
+      <ScrollHueShift />
       <CustomCursor />
       <ScrollProgress />
       <FloatingParticles />
       <KonamiEasterEgg />
+      <BackToTop />
       <AnimatedRoutes />
     </BrowserRouter>
   );
