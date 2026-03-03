@@ -1,23 +1,17 @@
 import React, { useState, useEffect, Suspense } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import MagneticButton from './MagneticButton';
 
 const GlassOrb = React.lazy(() => import('./GlassOrb'));
 
-const subtitleWords = [
-    "I craft strategic, high-performing UI/UX",
-    "for ambitious brands and startups",
-    "that need more than just beautiful pixels."
-];
+const rotatingWords = ['startups', 'humans', 'the culture', 'impact', 'conversion'];
 
 const Hero: React.FC = () => {
-    const [revealedLines, setRevealedLines] = useState(0);
+    const [wordIndex, setWordIndex] = useState(0);
 
     useEffect(() => {
-        const timers = subtitleWords.map((_, i) =>
-            setTimeout(() => setRevealedLines(i + 1), 1200 + i * 600)
-        );
-        return () => timers.forEach(clearTimeout);
+        const interval = setInterval(() => setWordIndex(i => (i + 1) % rotatingWords.length), 2500);
+        return () => clearInterval(interval);
     }, []);
 
     const scrollToWork = () => {
@@ -32,7 +26,6 @@ const Hero: React.FC = () => {
 
     return (
         <section className="relative min-h-screen flex items-center justify-center pt-24 pb-20 px-6 md:px-16 overflow-hidden">
-            {/* 3D Orb background */}
             <Suspense fallback={null}>
                 <GlassOrb />
             </Suspense>
@@ -76,38 +69,46 @@ const Hero: React.FC = () => {
                     </span>
                 </motion.div>
 
-                {/* Animated subtitle — line by line */}
-                <div className="max-w-2xl mx-auto mb-14 min-h-[80px]">
-                    {subtitleWords.map((line, i) => (
-                        <motion.p
-                            key={i}
-                            initial={{ opacity: 0, y: 10, filter: 'blur(8px)' }}
-                            animate={i < revealedLines
-                                ? { opacity: 1, y: 0, filter: 'blur(0px)' }
-                                : { opacity: 0, y: 10, filter: 'blur(8px)' }
-                            }
-                            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                            className="text-base md:text-lg font-sans font-light text-text-secondary leading-relaxed"
-                        >
-                            {line}
-                        </motion.p>
-                    ))}
-                </div>
+                {/* Animated subtitle with rotating words */}
+                <motion.div
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 1.3, duration: 0.8 }}
+                    className="max-w-2xl mx-auto mb-14"
+                >
+                    <p className="text-lg md:text-xl font-sans font-light text-text-secondary leading-relaxed">
+                        I craft strategic, high-performing UI/UX for{' '}
+                        <span className="inline-block w-[120px] md:w-[140px] text-left relative">
+                            <AnimatePresence mode="wait">
+                                <motion.span
+                                    key={wordIndex}
+                                    initial={{ opacity: 0, y: 12, filter: 'blur(6px)' }}
+                                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                                    exit={{ opacity: 0, y: -12, filter: 'blur(6px)' }}
+                                    transition={{ duration: 0.4 }}
+                                    className="text-accent font-medium absolute left-0"
+                                >
+                                    {rotatingWords[wordIndex]}
+                                </motion.span>
+                            </AnimatePresence>
+                        </span>
+                    </p>
+                </motion.div>
 
                 {/* CTAs */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 2.5, duration: 0.8 }}
+                    transition={{ delay: 2, duration: 0.8 }}
                     className="flex flex-col sm:flex-row items-center justify-center gap-4"
                 >
                     <MagneticButton onClick={scrollToWork}>
-                        <span className="px-8 py-4 rounded-full bg-accent text-bg font-sans font-medium text-sm uppercase tracking-[0.15em] inline-block hover:shadow-[0_0_35px_-5px_rgba(196,181,253,0.35)] transition-all duration-500">
+                        <span className="px-8 py-4 rounded-full bg-accent text-bg font-sans font-semibold text-sm uppercase tracking-[0.15em] inline-block hover:shadow-[0_0_35px_-5px_rgba(196,181,253,0.35)] transition-all duration-500">
                             View Case Studies
                         </span>
                     </MagneticButton>
                     <MagneticButton onClick={scrollToContact}>
-                        <span className="px-8 py-4 rounded-full border border-border text-text-secondary font-sans font-medium text-sm uppercase tracking-[0.15em] inline-block hover:border-accent hover:text-accent transition-all duration-500">
+                        <span className="px-8 py-4 rounded-full border border-border text-text-primary font-sans font-medium text-sm uppercase tracking-[0.15em] inline-block hover:border-accent hover:text-accent transition-all duration-500">
                             Let's Work Together
                         </span>
                     </MagneticButton>
@@ -117,7 +118,7 @@ const Hero: React.FC = () => {
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ delay: 3.5, duration: 1 }}
+                    transition={{ delay: 3, duration: 1 }}
                     className="mt-20 flex flex-col items-center cursor-none"
                     onClick={scrollToWork}
                 >

@@ -5,6 +5,7 @@ import { projects } from '../data/projects';
 import type { ProjectData } from '../data/projects';
 import RevealOnScroll from './RevealOnScroll';
 import SkeletonImage from './SkeletonImage';
+import TextScramble from './TextScramble';
 
 const projectMeta: Record<string, { industry: string; impact: string; metric?: string }> = {
     'dots-brand-system': {
@@ -80,13 +81,15 @@ const Work: React.FC = () => {
             </div>
 
             <RevealOnScroll>
-                <span className="text-[10px] font-sans font-medium uppercase tracking-[0.3em] text-accent block mb-4">
+                <span className="text-[10px] font-sans font-semibold uppercase tracking-[0.3em] text-accent block mb-4">
                     Proof of Work
                 </span>
-                <h2 className="text-4xl md:text-5xl font-display font-bold text-text-primary tracking-tight mb-4">
-                    Selected Experiments
-                </h2>
-                <p className="text-base font-sans font-light text-text-secondary max-w-lg mb-16">
+                <TextScramble
+                    text="Selected Experiments"
+                    as="h2"
+                    className="text-4xl md:text-5xl font-display font-bold text-text-primary tracking-tight mb-4"
+                />
+                <p className="text-base font-sans text-text-secondary max-w-lg mb-16">
                     Strategic design with measurable outcomes — not just pretty screens.
                 </p>
             </RevealOnScroll>

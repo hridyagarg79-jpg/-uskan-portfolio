@@ -13,6 +13,8 @@ import CustomCursor from './components/CustomCursor';
 import PageTransition from './components/PageTransition';
 import ScrollProgress from './components/ScrollProgress';
 import FloatingParticles from './components/FloatingParticles';
+import CurrentlyStrip from './components/CurrentlyStrip';
+import Obsessions from './components/Obsessions';
 import ProjectPage from './pages/ProjectPage';
 import NotFound from './pages/NotFound';
 
@@ -23,10 +25,12 @@ function HomePage() {
         <Navbar />
         <main className="relative z-10">
           <Hero />
+          <CurrentlyStrip />
           <section id="work"><Work /></section>
           <WhyWorkWithMe />
           <Process />
           <Services />
+          <Obsessions />
           <Testimonials />
           <section id="about"><About /></section>
           <Footer />
